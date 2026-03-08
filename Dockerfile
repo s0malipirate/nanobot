@@ -8,18 +8,12 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Копіюємо залежності спочатку (кеш-шар)
-COPY pyproject.toml README.md LICENSE ./
-RUN uv pip install --system --no-cache . 
-RUN rm -rf nanobot
-
-# Копіюємо весь код
-COPY nanobot/ nanobot/
-
-# Повторна інсталяція (для editable install або оновлень)
+# Копіюємо ВСЕ одразу (код + metadata)
+COPY . .
+# Встановлюємо nanobot (залежності + сам пакет)
 RUN uv pip install --system --no-cache .
 
-# Директорія для конфігу (persistent не буде на Render Free, тому env vars важливіші)
+# Директорія для конфігу (на Render Free не persistent, тому ключі через env vars)
 RUN mkdir -p /root/.nanobot
 
 # Порт для gateway (якщо використовуєш web-інтерфейс або health-check)
