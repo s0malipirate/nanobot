@@ -10,7 +10,6 @@ WORKDIR /app
 
 # Копіюємо залежності спочатку (кеш-шар)
 COPY pyproject.toml README.md LICENSE ./
-RUN mkdir -p nanobot && touch nanobot/__init__.py 
 RUN uv pip install --system --no-cache . 
 RUN rm -rf nanobot
 
