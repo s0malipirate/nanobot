@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: nanobot-telegram-agent
+    env: docker                  # бо ми використовуємо Dockerfile
+    plan: free                   # безкоштовний tier
+    branch: main                 # або твоя гілка
+    region: frankfurt            # найближчий до України (європа), альтернативи: oregon, singapore
+    healthCheckPath: /health     # якщо в Nanobot є /health ендпоінт; якщо ні — прибери або додай у код
+    autoDeploy: true             # автоматичний деплой при пуші в main
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false              # не хардкодимо — вводиш вручну в dashboard після створення
+      - key: OPENROUTER_API_KEY
+        sync: false              # те саме — вводиш вручну
+      - key: DEFAULT_MODEL
+        value: arcee-ai/trinity-large-preview:free   # твоя бажана модель (безкоштовна!)
+      - key: NANOBOT_LOG_LEVEL
+        value: INFO
+      # Додай інші, якщо потрібно, наприклад:
+      # - key: GROQ_API_KEY
+      #   sync: false
